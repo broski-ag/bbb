@@ -95,16 +95,17 @@ function App() {
       : ['/pc/bg.webp', '/pc/me.webp', '/pc/me 2.webp'];
 
     const loaded = new Set<string>();
+    const hideLoader = () => {
+      setReady(true);
+      const loader = document.getElementById('initial-loader');
+      if (loader) {
+        loader.classList.add('is-done');
+        setTimeout(() => loader.remove(), 700);
+      }
+    };
     const checkDone = () => {
       if (loaded.size === heroImages.length) {
-        requestAnimationFrame(() => {
-          setReady(true);
-          const loader = document.getElementById('initial-loader');
-          if (loader) {
-            loader.style.opacity = '0';
-            setTimeout(() => loader.remove(), 600);
-          }
-        });
+        requestAnimationFrame(() => setTimeout(hideLoader, 100));
       }
     };
 
@@ -116,13 +117,8 @@ function App() {
     });
 
     const timeout = setTimeout(() => {
-      setReady(true);
-      const loader = document.getElementById('initial-loader');
-      if (loader) {
-        loader.style.opacity = '0';
-        setTimeout(() => loader.remove(), 600);
-      }
-    }, 3000);
+      hideLoader();
+    }, 2000);
 
     return () => clearTimeout(timeout);
   }, []);
@@ -172,7 +168,7 @@ function App() {
   const vh = (n: number) => window.innerWidth < 768 ? `calc(var(--mobile-vh) * ${n})` : `${n}vh`;
 
   return (
-    <div className="relative" style={{ opacity: ready ? 1 : 0, transition: 'opacity 0.6s ease-out' }}>
+    <div className={`relative ${ready ? 'hero-ready' : ''}`} style={{ opacity: ready ? 1 : 0, transition: 'opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1)' }}>
 {/* Fixed background — desktop */}
       <ClickWrapper
         className="fixed inset-0 z-0 bg-interactive hidden md:block"
@@ -240,7 +236,7 @@ function App() {
             width={HERO_MOBILE.width}
             height={HERO_MOBILE.height}
             fit="contain"
-            className="mobile-image hero-image-layer fixed no-parallax-y"
+            className="mobile-image hero-image-layer fixed no-parallax-y hero-enter"
             style={{ inset: 0, width: '100%', height: '100%', zIndex: 20 }}
           />
         </div>
@@ -284,7 +280,7 @@ function App() {
             height={HERO_DESKTOP.height}
             fit="contain"
             group
-            className="desktop-image hero-image-layer fixed no-parallax-y hero-design-text hide-testimonials"
+            className="desktop-image hero-image-layer fixed no-parallax-y hero-design-text hide-testimonials hero-enter"
             style={{ inset: 0, width: '100%', height: '100%', zIndex: 1 }}
           />
 
@@ -295,14 +291,14 @@ function App() {
             height={HERO_DESKTOP.height}
             fit="contain"
             group
-            className="desktop-image hero-image-layer fixed no-parallax-y hero-design-text hide-title"
+            className="desktop-image hero-image-layer fixed no-parallax-y hero-design-text hide-title hero-enter"
             style={{ inset: 0, width: '100%', height: '100%', zIndex: 20 }}
           />
         </div>
 
         {/* Scroll indicator arrow */}
         <div
-          className="bounce-arrow absolute bottom-8 left-1/2 -translate-x-1/2 z-[60] flex flex-col items-center gap-2"
+          className="bounce-arrow hero-enter absolute bottom-8 left-1/2 -translate-x-1/2 z-[60] flex flex-col items-center gap-2"
           onClick={() => {
             const el = document.querySelector('#portfolio');
             if (el) el.scrollIntoView({ behavior: 'smooth' });

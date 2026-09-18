@@ -134,6 +134,29 @@ video { transform: translateZ(0); -webkit-transform: translateZ(0); }
   animation: fade-in-delayed 1.2s ease-out;
 }
 
+/* === STAGGERED HERO ENTRANCE === */
+/* Elements with .hero-enter start hidden, then fade+rise in sequence once
+   the .hero-ready class is added to the root container. */
+.hero-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.hero-ready .hero-enter {
+  animation: hero-fade-in 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+.hero-ready .hero-enter:nth-child(1) { animation-delay: 0.1s; }
+.hero-ready .hero-enter:nth-child(2) { animation-delay: 0.25s; }
+.hero-ready .hero-enter:nth-child(3) { animation-delay: 0.4s; }
+.hero-ready .hero-enter:nth-child(4) { animation-delay: 0.55s; }
+.hero-ready .hero-enter:nth-child(5) { animation-delay: 0.7s; }
+
+@keyframes hero-fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 /* === BOUNCING ARROW === */
 @keyframes bounce-arrow {
   0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.85; }
@@ -448,7 +471,9 @@ video { transform: translateZ(0); }
   .animate-fade-in-delayed,
   .marquee-track,
   .stat-card,
-  .stat-number-pulse { animation: none; }
+  .stat-number-pulse,
+  .hero-enter { animation: none; }
+  .hero-enter { opacity: 1; transform: none; }
   .transition-all, .transition-opacity, .transition-colors { transition: none; }
 }
 
