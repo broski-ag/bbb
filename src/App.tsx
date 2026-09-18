@@ -82,6 +82,7 @@ const skills = [
 function App() {
   const [showContact, setShowContact] = useState(false);
   const [ready, setReady] = useState(false);
+  const [heroHidden, setHeroHidden] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
 
   // drives the desktop -> tablet hero morph (see src/hooks/useHeroMorph.ts)
@@ -160,6 +161,11 @@ function App() {
       onEnter: () => setShowContact(true), onLeaveBack: () => setShowContact(false),
     });
 
+    ScrollTrigger.create({
+      trigger: portfolioSectionRef.current, start: 'top top', end: 'top top',
+      onEnter: () => setHeroHidden(true), onLeaveBack: () => setHeroHidden(false),
+    });
+
     return () => { ScrollTrigger.getAll().forEach(t => t.kill()); };
   }, []);
 
@@ -169,7 +175,7 @@ function App() {
     <div className="relative" style={{ opacity: ready ? 1 : 0, transition: 'opacity 0.6s ease-out' }}>
 {/* Fixed background — desktop */}
       <ClickWrapper
-        className="fixed inset-0 z-0 bg-interactive hidden md:block"
+        className={`fixed inset-0 z-0 bg-interactive hidden md:block transition-opacity duration-500 ${heroHidden ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
         scrollTo="#portfolio"
         glowColor="rgba(255,255,255,0.15)"
         noHover
@@ -184,7 +190,7 @@ function App() {
 
       {/* Fixed background — mobile */}
       <ClickWrapper
-        className="fixed inset-0 z-0 bg-interactive md:hidden"
+        className={`fixed inset-0 z-0 bg-interactive md:hidden transition-opacity duration-500 ${heroHidden ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
         scrollTo="#portfolio"
         glowColor="rgba(255,255,255,0.15)"
         noHover
@@ -200,7 +206,7 @@ function App() {
       {/* Hero Section */}
       <div
         ref={heroRef}
-        className="relative w-full overflow-hidden bg-transparent"
+        className={`relative w-full overflow-hidden bg-transparent transition-opacity duration-500 ${heroHidden ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
         style={{ minHeight: vh(100), height: vh(100) }}
       >
         {/* Mobile layers */}
