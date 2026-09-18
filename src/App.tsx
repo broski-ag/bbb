@@ -175,7 +175,7 @@ function App() {
     <div className="relative" style={{ opacity: ready ? 1 : 0, transition: 'opacity 0.6s ease-out' }}>
 {/* Fixed background — desktop */}
       <ClickWrapper
-        className={`fixed inset-0 z-0 bg-interactive hidden md:block transition-opacity duration-500 ${heroHidden ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+        className="fixed inset-0 z-0 bg-interactive hidden md:block"
         scrollTo="#portfolio"
         glowColor="rgba(255,255,255,0.15)"
         noHover
@@ -190,7 +190,7 @@ function App() {
 
       {/* Fixed background — mobile */}
       <ClickWrapper
-        className={`fixed inset-0 z-0 bg-interactive md:hidden transition-opacity duration-500 ${heroHidden ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+        className="fixed inset-0 z-0 bg-interactive md:hidden"
         scrollTo="#portfolio"
         glowColor="rgba(255,255,255,0.15)"
         noHover
