@@ -145,47 +145,6 @@ function App() {
 
     const mobile = isMobile();
     const desktopEls = gsap.utils.toArray(".desktop-image");
-    const mobileEls  = gsap.utils.toArray(".mobile-image");
-
-    /* ---- hero fade-out ----------------------------------------------
-     * Triggered off the hero itself, not the portfolio panel: the panel is
-     * being y-translated by its own scrub below, so its start/end positions
-     * are unreliable (and the old "center top" -> "top top" range ran
-     * backwards, which is why the hero was still visible under the panel
-     * near the bottom of the page).
-     *
-     * "top top"  = scroll 0
-     * "65% top"  = 65% of one hero (viewport) height scrolled
-     * So the hero is fully gone by the time the portfolio panel fills the
-     * screen. Lower HERO_FADE_END to make it vanish sooner.
-     * ------------------------------------------------------------------ */
-    const HERO_FADE_START = "top top";
-    const HERO_FADE_END   = "65% top";
-
-    if (heroRef.current) {
-      gsap.to(desktopEls, {
-        autoAlpha: 0,
-        ease: "none",
-        scrollTrigger: {
-          trigger: heroRef.current,
-          start: HERO_FADE_START,
-          end: HERO_FADE_END,
-          scrub: true,
-          invalidateOnRefresh: true,
-        }
-      });
-      gsap.to(mobileEls, {
-        autoAlpha: 0,
-        ease: "none",
-        scrollTrigger: {
-          trigger: heroRef.current,
-          start: HERO_FADE_START,
-          end: HERO_FADE_END,
-          scrub: true,
-          invalidateOnRefresh: true,
-        }
-      });
-    }
     const desktopParallaxEls = desktopEls.filter((el: Element) => !el.classList.contains('no-parallax-y'));
     gsap.timeline({
       scrollTrigger: { trigger: portfolioSectionRef.current, start: "top bottom", end: "center top", scrub: 2 }
